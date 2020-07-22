@@ -1,31 +1,77 @@
 import React, {useState , useEffect} from 'react'
-import {Button, Input, Space} from 'antd';
+import {Button, Input, Space ,Form,Checkbox } from 'antd';
 import {EyeInvisibleOutlined, EyeTwoTone} from '@ant-design/icons';
 import {login} from '../http/http'
 import './login.css'
+// import { Provider } from 'react-redux';
+// import store from './store';
 
-const Login = () => {
+const Login = (props) => {
     const [usernum, setUsernum] = useState('');
     const [userpwd, setUserpwd] = useState('');
 
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 },
+    };
+    const tailLayout = {
+        wrapperCol: { offset: 8, span: 16 },
+    };
+
     useEffect(() => {
-        console.log(usernum,userpwd);
+
     })
+    const onFinish = values => {
+        // console.log('Success:', values);
+        let params = {username : values.username , password : values.password};
+        login(params).then((data) => {
+            // console.log(data.data);
+            if(data.data.code == 200){
+                console.log(props);
+                props.history.push('/index');
+                // console.log(props);
+            }
+        });
+    };
 
     return (
-        <div className="loginpage">
-            <Space direction="vertical">
-                <Input placeholder="账号" defaultValue={usernum}
-                       onChange={(e) => inputChange(e, 'num')}/>
-                <Input.Password
-                    placeholder="密码"
-                    defaultValue={userpwd}
-                    onChange={(e) => inputChange(e, 'pwd')}
-                    iconRender={visible => (visible ? <EyeTwoTone/> : <EyeInvisibleOutlined/>)}
-                />
-                <Button type="primary" onClick={(e) => goLogin()}>登录</Button>
-            </Space>
-        </div>
+        // <Provider store={store}>
+            <div className="loginpage">
+                <Form
+                    {...layout}
+                    name="basic"
+                    initialValues={{ remember: true }}
+                    onFinish={onFinish}
+                    className="login-div"
+                >
+                    <Form.Item
+                        label="账号"
+                        name="username"
+                        rules={[{ required: true, message: 'Please input your username!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="密码"
+                        name="password"
+                        rules={[{ required: true, message: 'Please input your password!' }]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+
+                    <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+                        <Checkbox>记住账号</Checkbox>
+                    </Form.Item>
+
+                    <Form.Item {...tailLayout}>
+                        <Button type="primary" htmlType="submit">
+                            登录
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </div>
+        // </Provider>
     )
     function inputChange(e , key){
         if(key == 'num'){
