@@ -1,102 +1,118 @@
-import React from "react";
+import React,{useState , useEffect} from "react";
 import {Layout, Menu, Breadcrumb} from 'antd';
 import {UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons';
 import './index.css';
+import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
+import {Index} from '../pages/index/index'
+import {Library} from '../pages/library/library'
+import {Note} from '../pages/note/note'
+import {People} from '../pages/people/people'
 
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
-const homeIndex = () => {
-    // const state = {
-    //     current: 'mail',
-    // };
-    //
-    // const handleClick = e => {
-    //     console.log('click ', e);
-    //     this.setState({ current: e.key });
-    // };
-    // const { current } = state;
+
+const HomeIndex = () => {
+
+    const [listMenu , setListMenu] = useState([
+        {id: 0, path: '/tec', name: '技术采用'},
+        {id: 1, path: '/tec', name: '最近更新'},
+        {id: 2, path: '/tec', name: '下载源码'},
+        {id: 3, path: '/tec', name: '关于我们'}]);
     const routerList = [
         {id: 0, path: '/index', name: '首页'},
         {id: 1, path: '/jotter', name: '笔记本'},
         {id: 2, path: '/library', name: '图书馆'},
         {id: 3, path: '/admin', name: '个人中心'}
     ]
+    //
+    // const listMenu = [
 
-    const listMenu = [
-        {id : 0 , path:'/tec' , name :'技术采用'},
-        {id : 1 , path:'/tec' , name :'最近更新'},
-        {id : 2 , path:'/tec' , name :'下载源码'},
-        {id : 3 , path:'/tec' , name :'关于我们'},
-    ]
+    // ]
 
     return (
+
         <Layout className="index-container">
-            <Header>
-                {/*<div className="logo" />*/}
-                <Menu mode="horizontal" defaultSelectedKeys={['0']}>
-                    {/*<Menu.Item key="1">nav 1</Menu.Item>*/}
-                    {/*<Menu.Item key="2">nav 2</Menu.Item>*/}
-                    {/*<Menu.Item key="3">nav 3</Menu.Item>*/}
-                    {
-                        routerList.map((item , key) => {
-                            return <Menu.Item key={item.id}>{item.name}</Menu.Item>
-                        })
-                    }
-                </Menu>
-            </Header>
-            <Layout>
-                <Sider width={200} className="site-layout-background">
-                    <Menu
-                        mode="inline"
-                        defaultSelectedKeys={['1']}
-                        defaultOpenKeys={['sub1']}
-                        style={{height: '100%', borderRight: 0}}
-                    >
+            <Router>
+                <Header>
+                    <Menu mode="horizontal" defaultSelectedKeys={['0']}>
                         {
-                            listMenu.map((item , key) => {
-                                return <Menu.Item key={item.id}>{item.name}</Menu.Item>
+                            routerList.map((item, key) => {
+                                return (
+                                    <Menu.Item key={item.id} onClick={(e) => menuChange(e)}>
+                                        <Link to={item.path} key={item.id}>{item.name}</Link>
+                                    </Menu.Item>
+                                )
                             })
                         }
-                        {/*<SubMenu key="sub1" icon={<UserOutlined/>} title="subnav 1">*/}
-                        {/*    <Menu.Item key="1">option1</Menu.Item>*/}
-                        {/*    <Menu.Item key="2">option2</Menu.Item>*/}
-                        {/*    <Menu.Item key="3">option3</Menu.Item>*/}
-                        {/*    <Menu.Item key="4">option4</Menu.Item>*/}
-                        {/*</SubMenu>*/}
-                        {/*<SubMenu key="sub2" icon={<LaptopOutlined/>} title="subnav 2">*/}
-                        {/*    <Menu.Item key="5">option5</Menu.Item>*/}
-                        {/*    <Menu.Item key="6">option6</Menu.Item>*/}
-                        {/*    <Menu.Item key="7">option7</Menu.Item>*/}
-                        {/*    <Menu.Item key="8">option8</Menu.Item>*/}
-                        {/*</SubMenu>*/}
-                        {/*<SubMenu key="sub3" icon={<NotificationOutlined/>} title="subnav 3">*/}
-                        {/*    <Menu.Item key="9">option9</Menu.Item>*/}
-                        {/*    <Menu.Item key="10">option10</Menu.Item>*/}
-                        {/*    <Menu.Item key="11">option11</Menu.Item>*/}
-                        {/*    <Menu.Item key="12">option12</Menu.Item>*/}
-                        {/*</SubMenu>*/}
                     </Menu>
-                </Sider>
-                <Layout style={{padding: '0 24px 24px'}}>
-                    <Breadcrumb style={{margin: '16px 0'}}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <Content
-                        className="site-layout-background"
-                        style={{
-                            padding: 24,
-                            margin: 0,
-                            minHeight: 280,
-                        }}
-                    >
-                        Content
-                    </Content>
+                </Header>
+                <Layout>
+                    <Sider width={200} className="site-layout-background">
+                        <Menu
+                            mode="inline"
+                            defaultSelectedKeys={['0']}
+                            defaultOpenKeys={['sub1']}
+                            style={{height: '100%', borderRight: 0}}
+
+                        >
+                            {
+                                listMenu.map((item, key) => {
+                                    return <Menu.Item key={item.id}>{item.name}</Menu.Item>
+                                })
+                            }
+                        </Menu>
+                    </Sider>
+                    <Layout style={{padding: '0 24px 24px'}}>
+                        {/*<Breadcrumb style={{margin: '16px 0'}}>*/}
+                        {/*    <Breadcrumb.Item>Home</Breadcrumb.Item>*/}
+                        {/*    <Breadcrumb.Item>List</Breadcrumb.Item>*/}
+                        {/*    <Breadcrumb.Item>App</Breadcrumb.Item>*/}
+                        {/*</Breadcrumb>*/}
+                        <Content
+                            className="site-layout-background"
+                            style={{
+                                padding: 24,
+                                margin: 0,
+                                minHeight: 280,
+                            }}
+                        >
+                            <div>
+                                <Route exact path='/index' component={Index}></Route>
+                                <Route path='/jotter' component={Note}></Route>
+                                <Route path='/library' component={Library}></Route>
+                                <Route path='/admin' component={People}></Route>
+                            </div>
+                        </Content>
+                    </Layout>
                 </Layout>
-            </Layout>
+            </Router>
+
         </Layout>
     )
+    // const menuChange = (e) => {
+    //     console.log(e);
+    // }
+    function menuChange (e)  {
+        console.log(e);
+        const note = 1;
+        const tushu = 2;
+        const admin = 3;
+        if(e.key == note){
+            setListMenu([{id: 0, path: '/tec', name: '感悟'},
+                {id: 1, path: '/tec', name: '分享'}])
+        }else if(e.key == tushu){
+            setListMenu([{id: 0, path: '/tec', name: '全部'},
+                {id: 1, path: '/tec', name: '文学'},
+                {id: 2, path: '/tec', name: '流行'},
+                {id: 3, path: '/tec', name: '文化'},
+                {id: 4, path: '/tec', name: '生活'},
+                {id: 5, path: '/tec', name: '经营'},
+                {id: 6, path: '/tec', name: '科技'}])
+        }else if(e.key == admin){
+            setListMenu([{id: 0, path: '/tec', name: '感悟'},
+                {id: 1, path: '/tec', name: '分享'}])
+        }
+    }
 }
 
-export default homeIndex;
+export default HomeIndex;

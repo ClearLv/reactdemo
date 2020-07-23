@@ -8,6 +8,9 @@ export const AppRouter = () => {
         <Router>
             <Route path='/' exact component={Login}/>
             <Route path='/index' component={Index}/>
+            <Route path='/jotter' component={Index}/>
+            <Route path='/library' component={Index}/>
+            <Route path='/admin' component={Index}/>
         </Router>
     )
 }

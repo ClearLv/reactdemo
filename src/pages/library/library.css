@@ -1,0 +1,11 @@
+.image-size{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
+.image-style{
+    border: 1px solid black;
+    width: 120px;
+    height: 200px;
+}
