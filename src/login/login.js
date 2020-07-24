@@ -1,10 +1,9 @@
-import React, {useState , useEffect} from 'react'
+import React, {useState , useEffect ,useReducer} from 'react'
 import {Button, Input, Space ,Form,Checkbox } from 'antd';
 import {EyeInvisibleOutlined, EyeTwoTone} from '@ant-design/icons';
 import {login} from '../http/http'
 import './login.css'
-// import { Provider } from 'react-redux';
-// import store from './store';
+import {reducer} from '../reducer/index'
 
 const Login = (props) => {
     const [usernum, setUsernum] = useState('');
@@ -21,13 +20,16 @@ const Login = (props) => {
     useEffect(() => {
 
     })
+    let action = {type : ''};
+    const [logingStatus , dispatchLoginStatus] = useReducer(reducer , action);
     const onFinish = values => {
         // console.log('Success:', values);
         let params = {username : values.username , password : values.password};
         login(params).then((data) => {
             // console.log(data.data);
             if(data.data.code == 200){
-                console.log(props);
+                window.localStorage.setItem("token" , '123');
+                dispatchLoginStatus({type:'setSession'});
                 props.history.push('/index');
                 // console.log(props);
             }

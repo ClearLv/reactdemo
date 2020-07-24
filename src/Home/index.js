@@ -1,4 +1,4 @@
-import React,{useState , useEffect} from "react";
+import React,{useState , useEffect , useReducer} from "react";
 import {Layout, Menu, Breadcrumb} from 'antd';
 import {UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons';
 import './index.css';
@@ -7,12 +7,16 @@ import {Index} from '../pages/index/index'
 import {Library} from '../pages/library/library'
 import {Note} from '../pages/note/note'
 import {People} from '../pages/people/people'
+import {reducer} from "../reducer";
+import {listReducer} from "../reducer/listReducer";
+import {bookReducer} from "../reducer/bookReducer";
 
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 
 const HomeIndex = () => {
-
+    let action = {};
+    const [menu , dispatchMenu] = useReducer(listReducer , action);
     const [listMenu , setListMenu] = useState([
         {id: 0, path: '/tec', name: '技术采用'},
         {id: 1, path: '/tec', name: '最近更新'},
@@ -57,7 +61,8 @@ const HomeIndex = () => {
                         >
                             {
                                 listMenu.map((item, key) => {
-                                    return <Menu.Item key={item.id}>{item.name}</Menu.Item>
+                                    return <Menu.Item onClick={(e) => changeShowItem(e , item.name)} key={item.id}>{item.name}</Menu.Item>
+                                    // return <SideMenu key={key} item={item}/>
                                 })
                             }
                         </Menu>
@@ -93,7 +98,6 @@ const HomeIndex = () => {
     //     console.log(e);
     // }
     function menuChange (e)  {
-        console.log(e);
         const note = 1;
         const tushu = 2;
         const admin = 3;
@@ -112,6 +116,10 @@ const HomeIndex = () => {
             setListMenu([{id: 0, path: '/tec', name: '感悟'},
                 {id: 1, path: '/tec', name: '分享'}])
         }
+    };
+    function changeShowItem(e , key){
+        console.log(e);
+        dispatchMenu({type:'item',item : key});
     }
 }
 
