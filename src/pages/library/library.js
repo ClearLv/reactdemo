@@ -1,27 +1,26 @@
-import React,{useState , useEffect , useReducer} from "react";
+import React,{useState , useEffect , useReducer ,useContext} from "react";
 import './library.css'
 import {getAllBookInfo} from '../../http/http'
 // import axios from "axios";
 import axios from '../../http/myAxios'
-import {reducer} from "../../reducer";
-import {listReducer} from "../../reducer/listReducer";
-import {bookReducer} from "../../reducer/bookReducer";
+import {Context} from "../../Home";
 
 export const Library = () => {
     const [bookList , setBookList] = useState([]);
-    let action = {};
-    const [menu , dispatchMenu] = useReducer(listReducer);
-    const [book , dispatchBook] = useReducer(bookReducer);
+    const [changeBook , setChangeBook] = useState([]);
+    const AppContext = useContext(Context);
     useEffect(() => {
         initData();
-        console.log(menu);
-    } , [])
+    },[])
+    useEffect(() => {
+        getItemTitleChange(AppContext);
+    } , [AppContext])
+
     return (
         <div>
-            {console.log(menu)}
             <div className='image-size'>
                     {
-                        bookList.map((item , index) => {
+                        changeBook.map((item , index) => {
                             return(
                                 <div key={index + 'a'} className='image-style'>
                                     <div key={index + 'b'}>
@@ -36,15 +35,34 @@ export const Library = () => {
             </div>
         </div>
     )
+
     function initData(){
-        // getAllBookInfo.then((data) => {
-        //     console.log(data);
-        // })
         axios.get('/api/getAllBook').then((data) => {
-            // console.log(data);
             setBookList(data.data);
-            dispatchBook({type:'book' , data: data.data});
+            setChangeBook(data.data);
         });
-        // console.log(getAllBookInfo);
+    }
+
+    function getItemTitleChange(item){
+        console.log(item.state.value);
+        if(item.state.value == '文学'){
+            // changeBookData('文学');
+            setChangeBook(bookList.filter(item => item.cate == '文学'));
+        }else if(item.state.value == '流行'){
+            // changeBookData('流行');
+            setChangeBook(bookList.filter(item => item.cate == '流行'));
+        }else if(item.state.value == '经营'){
+            // changeBookData('经营');
+            setChangeBook(bookList.filter(item => item.cate == '经营'));
+        }else if(item.state.value == '文化'){
+            // changeBookData('文化');
+            setChangeBook(bookList.filter(item => item.cate == '文化'));
+        }else if(item.state.value == '生活'){
+            // changeBookData('生活');
+            setChangeBook(bookList.filter(item => item.cate == '生活'));
+        }else if(item.state.value == '科技'){
+            // changeBookData('科技');
+            setChangeBook(bookList.filter(item => item.cate == '科技'));
+        }
     }
 }

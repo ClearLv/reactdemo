@@ -1,4 +1,4 @@
-import React,{useState , useEffect , useReducer} from "react";
+import React,{useState , useEffect , useReducer ,createContext} from "react";
 import {Layout, Menu, Breadcrumb} from 'antd';
 import {UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons';
 import './index.css';
@@ -7,16 +7,18 @@ import {Index} from '../pages/index/index'
 import {Library} from '../pages/library/library'
 import {Note} from '../pages/note/note'
 import {People} from '../pages/people/people'
-import {reducer} from "../reducer";
-import {listReducer} from "../reducer/listReducer";
-import {bookReducer} from "../reducer/bookReducer";
+import {reducer , defaultState} from "../reducer/context";
+// import {listReducer} from "../reducer/listReducer";
+// import {bookReducer} from "../reducer/bookReducer";
 
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
+export const Context = createContext(null);
 
 const HomeIndex = () => {
     let action = {};
-    const [menu , dispatchMenu] = useReducer(listReducer , action);
+    // const [menu , dispatchMenu] = useReducer(listReducer , action);
+    const [state, dispatch] = useReducer(reducer, defaultState);
     const [listMenu , setListMenu] = useState([
         {id: 0, path: '/tec', name: '技术采用'},
         {id: 1, path: '/tec', name: '最近更新'},
@@ -82,10 +84,12 @@ const HomeIndex = () => {
                             }}
                         >
                             <div>
-                                <Route exact path='/index' component={Index}></Route>
-                                <Route path='/jotter' component={Note}></Route>
-                                <Route path='/library' component={Library}></Route>
-                                <Route path='/admin' component={People}></Route>
+                                <Context.Provider value={{state, dispatch: dispatch}}>
+                                    <Route exact path='/index' component={Index}></Route>
+                                    <Route path='/jotter' component={Note}></Route>
+                                    <Route path='/library' component={Library}></Route>
+                                    <Route path='/admin' component={People}></Route>
+                                </Context.Provider>
                             </div>
                         </Content>
                     </Layout>
@@ -119,7 +123,8 @@ const HomeIndex = () => {
     };
     function changeShowItem(e , key){
         console.log(e);
-        dispatchMenu({type:'item',item : key});
+        dispatch({type:'ADD_TITLE' , title : key});
+        // dispatchMenu({type:'item',item : key});
     }
 }
 
