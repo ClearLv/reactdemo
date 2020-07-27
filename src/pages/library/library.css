@@ -12,6 +12,10 @@
     height: 200px;
     margin: 25px;
 }
+.head-bar{
+    display: flex;
+    flex-direction: row;
+}
 /*.bor{*/
 /*    border: 1px solid black;*/
 /*    width: 100%;*/
