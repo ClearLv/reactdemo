@@ -8,6 +8,7 @@ import {Library} from '../pages/library/library'
 import {Note} from '../pages/note/note'
 import {People} from '../pages/people/people'
 import {reducer , defaultState} from "../reducer/context";
+import {BookInfo} from '../pages/library/bookInfo'
 // import {listReducer} from "../reducer/listReducer";
 // import {bookReducer} from "../reducer/bookReducer";
 
@@ -87,7 +88,8 @@ const HomeIndex = () => {
                                 <Context.Provider value={{state, dispatch: dispatch}}>
                                     <Route exact path='/index' component={Index}></Route>
                                     <Route path='/jotter' component={Note}></Route>
-                                    <Route path='/library' component={Library}></Route>
+                                    <Route path='/library' exact component={Library}></Route>
+                                    <Route path='/library/bookInfo/:bookId' component={BookInfo}></Route>
                                     <Route path='/admin' component={People}></Route>
                                 </Context.Provider>
                             </div>

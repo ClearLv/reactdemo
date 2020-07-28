@@ -35,7 +35,10 @@ export const Library = (props) => {
                             return(
                                 <div key={index + 'a'} className='image-style'>
                                     <div key={index + 'b'}>
-                                        <img key={index + 'c'} width={120} height={160} src={item.cover}/>
+                                        <img key={index + 'c'} width={120}
+                                             onClick={() => goToEdit(item.id)}
+                                             height={160}
+                                             src={item.cover}/>
                                     </div>
                                     <div key={index + 'd'} style={{textAlign:'center',fontSize:13}}>{item.title}</div>
                                     <div key={index + 'e'} style={{textAlign:'center',fontSize:10}}>{item.author}</div>
@@ -142,5 +145,9 @@ export const Library = (props) => {
 
     function handleCancel() {
         setModalShow(false);
+    }
+
+    function goToEdit(bookid){
+        props.history.push("/library/bookInfo/"+bookid);
     }
 }
