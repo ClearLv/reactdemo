@@ -64,6 +64,7 @@ const Login = (props) => {
 
                     <Form.Item {...tailLayout} name="remember" valuePropName="checked">
                         <Checkbox>记住账号</Checkbox>
+                        <Button type="link" onClick={(e) => goToRegister(e)}>注册</Button>
                     </Form.Item>
 
                     <Form.Item {...tailLayout}>
@@ -89,6 +90,10 @@ const Login = (props) => {
         login(params).then((data) => {
             console.log(data.data);
         });
+    }
+    function goToRegister(e) {
+        console.log(e);
+        props.history.push('/register');
     }
 }
 export default Login;
