@@ -8,3 +8,13 @@
 .ant-menu-horizontal > .ant-menu-item:hover, .ant-menu-horizontal > .ant-menu-submenu:hover, .ant-menu-horizontal > .ant-menu-item-active, .ant-menu-horizontal > .ant-menu-submenu-active, .ant-menu-horizontal > .ant-menu-item-open, .ant-menu-horizontal > .ant-menu-submenu-open, .ant-menu-horizontal > .ant-menu-item-selected, .ant-menu-horizontal > .ant-menu-submenu-selected{
     border-bottom:0 !important;
 }
+.header-item{
+    display: flex;
+    flex-direction: row;
+}
+.header-icon{
+    width: 3%;
+}
+.header-nav{
+    width: 95%;
+}

@@ -1,6 +1,6 @@
 import React,{useState , useEffect , useReducer ,createContext} from "react";
 import {Layout, Menu, Breadcrumb} from 'antd';
-import {UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons';
+import {UserOutlined, LaptopOutlined, NotificationOutlined , PoweroffOutlined} from '@ant-design/icons';
 import './index.css';
 import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
 import {Index} from '../pages/index/index'
@@ -9,6 +9,7 @@ import {Note} from '../pages/note/note'
 import {People} from '../pages/people/people'
 import {reducer , defaultState} from "../reducer/context";
 import {BookInfo} from '../pages/library/bookInfo'
+import axios from '../http/myAxios'
 // import {listReducer} from "../reducer/listReducer";
 // import {bookReducer} from "../reducer/bookReducer";
 
@@ -16,7 +17,7 @@ const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 export const Context = createContext(null);
 
-const HomeIndex = () => {
+const HomeIndex = (props) => {
     let action = {};
     // const [menu , dispatchMenu] = useReducer(listReducer , action);
     const [state, dispatch] = useReducer(reducer, defaultState);
@@ -41,17 +42,22 @@ const HomeIndex = () => {
         <Layout className="index-container">
             <Router>
                 <Header>
-                    <Menu mode="horizontal" defaultSelectedKeys={['0']}>
-                        {
-                            routerList.map((item, key) => {
-                                return (
-                                    <Menu.Item key={item.id} onClick={(e) => menuChange(e)}>
-                                        <Link to={item.path} key={item.id}>{item.name}</Link>
-                                    </Menu.Item>
-                                )
-                            })
-                        }
-                    </Menu>
+                    <div className="header-item">
+                        <Menu className="header-nav" mode="horizontal" defaultSelectedKeys={['0']}>
+                            {
+                                routerList.map((item, key) => {
+                                    return (
+                                        <Menu.Item key={item.id} onClick={(e) => menuChange(e)}>
+                                            <Link to={item.path} key={item.id}>{item.name}</Link>
+                                        </Menu.Item>
+                                    )
+                                })
+                            }
+                        </Menu>
+                        <div className="header-icon">
+                            <PoweroffOutlined onClick={goLogout} style={{fontSize:30}}/>
+                        </div>
+                    </div>
                 </Header>
                 <Layout>
                     <Sider width={200} className="site-layout-background">
@@ -127,6 +133,14 @@ const HomeIndex = () => {
         console.log(e);
         dispatch({type:'ADD_TITLE' , title : key});
         // dispatchMenu({type:'item',item : key});
+    }
+    function goLogout() {
+        axios.get("/api/logout").then(({data}) => {
+            if(data.data == 'success'){
+                window.localStorage.removeItem("token");
+                props.props.history.push("/");
+            }
+        })
     }
 }
 

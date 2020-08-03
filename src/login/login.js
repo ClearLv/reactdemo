@@ -26,9 +26,9 @@ const Login = (props) => {
         // console.log('Success:', values);
         let params = {username : values.username , password : values.password};
         login(params).then((data) => {
-            // console.log(data.data);
+            console.log(data);
             if(data.data.code == 200){
-                window.localStorage.setItem("token" , '123');
+                // window.localStorage.setItem("token" , '123');
                 dispatchLoginStatus({type:'setSession'});
                 props.history.push('/index');
                 // console.log(props);

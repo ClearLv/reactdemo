@@ -2,6 +2,7 @@ import axios from 'axios'
 import React from "react";
 import {tokenStatus} from "../reducer/index";
 // let base = "/api";
+axios.defaults.withCredentials = true
 // 请求拦截器
 axios.interceptors.request.use(
     config => {
